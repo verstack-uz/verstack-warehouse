@@ -2,57 +2,34 @@ import React from "react";
 import { AppTheme, AppThemes } from "@/types";
 
 const ThemeSelector: React.FC = () => {
-  let [theme, setTheme] = React.useState<AppTheme>(AppThemes[0]);
+  let storedTheme = localStorage.getItem("theme") as AppTheme;
+  if (!storedTheme || !AppThemes.includes(storedTheme)) {
+    storedTheme = "light";
+    localStorage.setItem("theme", storedTheme);
+  }
+  let [theme, setTheme] = React.useState<AppTheme>(storedTheme);
+  React.useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  });
 
   return (
-    <div className="dropdown relative inline-flex [--auto-close:inside]">
-      <button
-        id="dropdown-transportation"
-        type="button"
-        className="dropdown-toggle btn btn-primary"
-        aria-haspopup="menu"
-        aria-expanded="false"
-        aria-label="Dropdown"
-      >
-        Dropdown radio
-        <span className="icon-[tabler--chevron-down] dropdown-open:rotate-180 size-4"></span>
-      </button>
-      <div
-        className="dropdown-menu dropdown-open:opacity-100 hidden"
-        role="menu"
-        aria-orientation="vertical"
-        aria-labelledby="dropdown-transportation"
-      >
-        <div className="dropdown-item gap-4">
+    <div>
+      <h1>Selected theme: {theme}</h1>
+
+      <div className="flex flex-row flex-wrap space-x-2 space-y-2">
+        {AppThemes.map((_theme: AppTheme, idx: number) => (
           <input
-            id="dropdown-radio-car-2"
-            name="dropdown-item-radio"
+            className="btn btn-soft flex-1"
             type="radio"
-            className="radio radio-primary"
-            defaultChecked={true}
+            name="radio-15"
+            aria-label={_theme}
+            defaultChecked={_theme === theme}
+            onClick={() => {
+              setTheme(_theme);
+              localStorage.setItem("theme", _theme);
+            }}
           />
-          <label
-            htmlFor="dropdown-radio-car-2"
-            className="label-text text-base-content block text-sm font-semibold"
-          >
-            Car{" "}
-          </label>
-        </div>
-        <div className="dropdown-item gap-4">
-          <input
-            id="dropdown-radio-bicycle-2"
-            name="dropdown-item-radio"
-            type="radio"
-            className="radio radio-primary"
-          />
-          <label
-            htmlFor="dropdown-radio-bicycle-2"
-            className="label-text text-base-content text-sm font-semibold"
-          >
-            {" "}
-            Bicycle{" "}
-          </label>
-        </div>
+        ))}
       </div>
     </div>
   );

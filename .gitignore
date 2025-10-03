@@ -8,7 +8,7 @@
 
 # Created by git when using merge tools for conflicts
 *.BACKUP.*
-*.BASE.*
+*.BASE.*d
 *.LOCAL.*
 *.REMOTE.*
 *_BACKUP_*.txt
@@ -194,19 +194,19 @@ thumb
 sketch
 
 ### Web ###
-*.asp
-*.cer
-*.csr
-*.css
-*.htm
-*.html
-*.js
-*.jsp
-*.php
-*.rss
-*.wasm
-*.wat
-*.xhtml
+#*.asp
+#*.cer
+#*.csr
+#*.css
+#*.htm
+#*.html
+#*.js
+#*.jsp
+#*.php
+#*.rss
+#*.wasm
+#*.wat
+#*.xhtml
 
 ### WebStorm ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider

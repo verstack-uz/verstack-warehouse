@@ -1,8 +1,19 @@
 import React from "react";
 import Header from "@/components/Header";
+import { AppTheme, AppThemes } from "@/types";
 
 const LoginPage: React.FC = () => {
   document.title = "Login";
+
+  let storedTheme = localStorage.getItem("theme") as AppTheme;
+  if (!storedTheme || !AppThemes.includes(storedTheme)) {
+    storedTheme = "light";
+    localStorage.setItem("theme", storedTheme);
+  }
+  let [theme, setTheme] = React.useState<AppTheme>(storedTheme);
+  React.useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  });
 
   return (
     <div className={"w-screen h-screen flex flex-col p-4 space-y-4"}>
