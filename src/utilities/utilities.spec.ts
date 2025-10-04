@@ -1,21 +1,16 @@
-// standard libraries
-import assert from "node:assert";
-
 // third-party libraries
 import {
   vi,
   describe,
   it,
   beforeAll,
-  afterAll,
   beforeEach,
-  afterEach,
   expect,
   expectTypeOf,
 } from "vitest";
 
 // local / internal stuff
-import { setStoredTheme, getStoredTheme, LS_KEY_THEME } from "./utilities";
+import { LSUtil } from "@/utilities/utilities";
 import { AppTheme, AppThemes } from "@/utilities/types";
 import { declareLocalStorageMock } from "@/utilities/mocks";
 
@@ -31,11 +26,9 @@ describe("setTheme() method test", () => {
 
   it("should have themes (at least ≥1), each having type `AppTheme` in AppThemes array", () => {
     expect(AppThemes.length).toBeGreaterThanOrEqual(1);
-
-    expectTypeOf(AppThemes).toEqualTypeOf<AppTheme[]>();
-    for (const theme of AppThemes) {
+    // note: if all themes are `AppTheme`, then the array itself is of type `AppTheme[]`
+    for (const theme of AppThemes)
       expectTypeOf(theme).toEqualTypeOf<AppTheme>();
-    }
   });
 
   it("should set theme in localStorage when calling setStoredTheme with valid theme", () => {
@@ -46,19 +39,19 @@ describe("setTheme() method test", () => {
     const setItemSpy = vi.spyOn(localStorage, localStorage.setItem.name);
 
     // Call the setStoredTheme with valid theme and expect no error
-    expect(() => setStoredTheme(testTheme)).not.toThrowError();
+    expect(() => LSUtil.setStoredTheme(testTheme)).not.toThrowError();
 
     // Check if localStorage.setItem was called with correct parameters
-    expect(setItemSpy).toHaveBeenCalledWith(LS_KEY_THEME, testTheme);
+    expect(setItemSpy).toHaveBeenCalledWith(LSUtil.Key.THEME, testTheme);
 
     // Check if the theme was actually set in localStorage
-    const storedTheme = localStorage.getItem(LS_KEY_THEME);
+    const storedTheme = localStorage.getItem(LSUtil.Key.THEME);
     expect(storedTheme).toBe(testTheme);
   });
 
   it("should work fine when providing valid app theme", () => {
     for (const theme of AppThemes)
-      expect(() => setStoredTheme(theme)).not.toThrowError();
+      expect(() => LSUtil.setStoredTheme(theme)).not.toThrowError();
   });
 
   it("should throw error when providing invalid app theme", () => {
@@ -83,7 +76,7 @@ describe("setTheme() method test", () => {
 
       // Expect setStoredTheme to throw an error when called with invalid theme
       expect(
-        () => setStoredTheme(theme as AppTheme),
+        () => LSUtil.setStoredTheme(theme as AppTheme),
         `Passing an invalid theme (${theme}) should throw an error!`,
       ).toThrowError();
     }
@@ -105,23 +98,23 @@ describe("getStoredTheme() method test", () => {
     const getItemSpy = vi.spyOn(localStorage, localStorage.getItem.name);
 
     // Call the getStoredTheme
-    const theme = getStoredTheme();
+    const theme = LSUtil.getStoredTheme();
 
     // Check if localStorage.getItem was called with correct parameters
-    expect(getItemSpy).toHaveBeenCalledWith(LS_KEY_THEME);
+    expect(getItemSpy).toHaveBeenCalledWith(LSUtil.Key.THEME);
 
     // Check if the returned theme is valid (even if not set before)
     expect(theme).not.toBeNull();
 
     // Set theme and get again
-    setStoredTheme(AppThemes.at(0));
-    const theme2 = getStoredTheme();
+    LSUtil.setStoredTheme(AppThemes.at(0));
+    const theme2 = LSUtil.getStoredTheme();
     expect(theme2).not.toBeNull();
     expect(theme2).toBe(AppThemes.at(0));
   });
 
   it("should return a valid (non-null) theme even if localStorage is empty", () => {
-    const theme = getStoredTheme();
+    const theme = LSUtil.getStoredTheme();
     expect(theme).not.toBeNull();
     expect(AppThemes.indexOf(theme)).not.toBe(-1);
   });
