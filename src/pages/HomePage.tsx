@@ -7,23 +7,28 @@
 
 import React from "react";
 import Header from "@/components/Header";
-import { getStoredTheme } from "@/utilities/utilities";
+import { LSUtil } from "@/utilities/utilities";
+import { AppRoute } from "@/routes";
 
 const HomePage: React.FC = () => {
   document.title = "Warehouse (by Verstack)";
 
   return (
     <div
-      data-theme={getStoredTheme()}
+      data-theme={LSUtil.getStoredTheme()}
       className={"w-screen h-screen flex flex-col p-4 space-y-4"}
     >
       <Header title={"Home"} />
 
-      <a href="/login" className={"btn"}>
+      <a href={AppRoute.REGISTER} className={"btn"}>
+        Register
+      </a>
+
+      <a href={AppRoute.LOGIN} className={"btn"}>
         Login
       </a>
 
-      <a href="/settings" className={"btn"}>
+      <a href={AppRoute.SETTINGS} className={"btn"}>
         Settings
       </a>
     </div>

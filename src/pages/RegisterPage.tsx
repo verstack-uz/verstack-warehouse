@@ -9,14 +9,14 @@ import Header from "@/components/Header";
 import { LSUtil } from "@/utilities/utilities";
 
 const LoginPage: React.FC = () => {
-  document.title = "User Login";
+  document.title = "User Registration";
 
   return (
     <div
       data-theme={LSUtil.getStoredTheme()}
       className={"w-screen h-screen flex flex-col p-4 space-y-4"}
     >
-      <Header title={"Login"} />
+      <Header title={"Register"} />
       <a href="/" className={"btn"}>
         Back home
       </a>

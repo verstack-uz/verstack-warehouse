@@ -10,7 +10,7 @@ import React from "react";
 
 // local / internal stuff
 import { AppTheme, AppThemes } from "@/utilities/types";
-import { capitalizeFirstLetter } from "@/utilities/utilities";
+import { StrUtil } from "@/utilities/utilities";
 
 interface ThemeSelectorProps {
   theme: AppTheme;
@@ -20,7 +20,12 @@ interface ThemeSelectorProps {
 const ThemeSelector: React.FC<ThemeSelectorProps> = ({ theme, setTheme }) => {
   return (
     <div className={"w-full"}>
-      <h1 className={"text-2xl"}>Selected theme: {theme}</h1>
+      <h1 className={"text-2xl"}>
+        Selected theme:
+        <span className={"text-primary ml-2"}>
+          {StrUtil.capitalizeFirstLetter(theme)}
+        </span>
+      </h1>
 
       <div className="mt-4 flex flex-row flex-wrap space-x-2 space-y-2">
         {AppThemes.map((_theme: AppTheme, idx: number) => (
@@ -29,7 +34,7 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({ theme, setTheme }) => {
             type="radio"
             key={`theme-selector-${idx}`}
             name="theme-selector-group"
-            aria-label={capitalizeFirstLetter(_theme)}
+            aria-label={StrUtil.capitalizeFirstLetter(_theme)}
             defaultChecked={_theme === theme}
             onClick={() => {
               setTheme(_theme);

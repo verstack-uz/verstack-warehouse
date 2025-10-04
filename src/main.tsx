@@ -6,30 +6,14 @@
 // third party libraries
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 
 // local / internal stuff
 import "../index.css";
-import HomePage from "@/pages/HomePage";
-import LoginPage from "@/pages/LoginPage";
-import SettingsPage from "@/pages/SettingsPage";
+import getRoutes from "@/routes";
 
 // routes
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <HomePage />,
-  },
-  {
-    path: "/login",
-    element: <LoginPage />,
-  },
-  {
-    path: "/settings",
-    element: <SettingsPage />,
-  },
-]);
+const router = getRoutes();
 
 // render app as SPA
 const container = document.getElementById("root");
