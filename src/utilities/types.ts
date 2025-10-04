@@ -21,10 +21,6 @@ export const AppThemes = [
 export type AppTheme = (typeof AppThemes)[number];
 
 // User object type
-export interface PhoneNumber {
-  countryCode: string; // +998 for Uzbekistan
-  number: string; // e.g., 901234567
-}
 export const UserRoles = [
   "warehouse manager",
   "foreman",
@@ -35,10 +31,8 @@ export const UserRoles = [
 ] as const;
 export type UserRole = (typeof UserRoles)[number];
 export interface User {
-  username: string;
-  passwordHash: string; // Hashed password using argon2
   firstName: string;
   lastName: string;
+  phoneNumber: string;
   role: UserRole;
-  phoneNumber: PhoneNumber;
 }

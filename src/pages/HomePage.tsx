@@ -5,32 +5,47 @@
  * инженер ПТО, бухгалтер, администратор).
  */
 
+// third-party libraries
 import React from "react";
+import { useNavigate } from "react-router";
+
+// local / internal stuff
 import Header from "@/components/Header";
-import { LSUtil } from "@/utilities/utilities";
+import { LSUtil, StrUtil } from "@/utilities/utilities";
 import { AppRoute } from "@/routes";
+import { User } from "@/utilities/types";
 
 const HomePage: React.FC = () => {
-  document.title = "Warehouse (by Verstack)";
+  // Set page title & navigate hook
+  // Also check if user is logged in & redirect to login page if not logged in
+  let navigate = useNavigate();
+  let user: User;
+  try {
+    user = LSUtil.getUser();
+    React.useEffect(() => {
+      document.title = "Warehouse by Verstack";
+    });
+  } catch {
+    React.useEffect(() => {
+      navigate(AppRoute.LOGIN);
+    });
+    return <></>;
+  }
 
   return (
     <div
-      data-theme={LSUtil.getStoredTheme()}
-      className={"w-screen h-screen flex flex-col p-4 space-y-4"}
+      data-theme={LSUtil.getTheme()}
+      className={"w-screen h-screen motion-preset-fade"}
     >
       <Header title={"Home"} />
-
-      <a href={AppRoute.REGISTER} className={"btn"}>
-        Register
-      </a>
-
-      <a href={AppRoute.LOGIN} className={"btn"}>
-        Login
-      </a>
-
-      <a href={AppRoute.SETTINGS} className={"btn"}>
-        Settings
-      </a>
+      <div className={"bg-base-100 h-full px-4 pt-4 flex flex-col space-y-4"}>
+        <h1 className={"text-2xl font-bold"}>
+          Welcome, {user.firstName} {user.lastName} ({user.phoneNumber})
+        </h1>
+        <p className={"text-lg"}>
+          You are logged in as a {StrUtil.capitalizeFirstLetter(user.role)}.
+        </p>
+      </div>
     </div>
   );
 };

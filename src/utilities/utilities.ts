@@ -1,27 +1,24 @@
-// third-party libraries
-import bcrypt from "bcryptjs";
-
 // local / internal stuff
-import { AppTheme, AppThemes, User } from "@/utilities/types";
+import { AppTheme, AppThemes, User, UserRoles } from "@/utilities/types";
 
 // Local Storage Utilities
 export namespace LSUtil {
-  // Local Storage Keys
+  // Local storage keys
   export enum Key {
     THEME = "theme",
-    USERS = "user",
+    USER = "user",
   }
 
-  // App theme management
+  // Theme data in local storage
 
   /**
    * @desc Get the stored theme from local storage. If not found, set to default "claude".
    * @return {AppTheme} The stored theme.
    */
-  export function getStoredTheme(): AppTheme {
+  export function getTheme(): AppTheme {
     let storedTheme = localStorage.getItem(Key.THEME) as AppTheme;
     if (!storedTheme || !AppThemes.includes(storedTheme)) {
-      storedTheme = "claude";
+      storedTheme = "corporate";
       localStorage.setItem(Key.THEME, storedTheme);
     }
     return storedTheme;
@@ -32,7 +29,7 @@ export namespace LSUtil {
    * @param theme {AppTheme} The theme to set.
    * @return {void}
    */
-  export function setStoredTheme(theme: AppTheme): void {
+  export function setTheme(theme: AppTheme): void {
     if (AppThemes.includes(theme)) {
       localStorage.setItem(Key.THEME, theme);
     } else {
@@ -42,73 +39,57 @@ export namespace LSUtil {
     }
   }
 
-  // User login status management
+  // User data in local storage
 
   /**
-   * @desc Get all users from local storage (private).
-   * @return {User[]} Array of users.
+   * @desc Retrieve the currently logged-in user from local storage.
+   * @return {User} The currently logged-in user.
+   * @throws {Error} If no user is currently logged in.
    */
-  function getAllUsers(): User[] {
-    const usersJson = localStorage.getItem(Key.USERS);
-    if (!usersJson) return [];
-    return JSON.parse(usersJson) as User[];
-  }
-
-  /**
-   * @desc Hash a password using bcrypt.
-   * @param password {string} The password to hash.
-   * @return {Promise<string>} The hashed password as a promise.
-   */
-  export async function passwordHash(password: string): Promise<string> {
-    const saltRounds = 5; // Adjust salt rounds as needed (higher is more secure but slower)
-    const salt = await bcrypt.genSalt(saltRounds);
-    return await bcrypt.hash(password, salt);
-  }
-
-  /**
-   * @desc Check if username and password hash (expected to be pre-hashed with
-   * passwordHash function using bcrypt) match a user in local storage.
-   * @return {User} The user object without password hash if found (passwordHash
-   * is set to empty string). Throws error if not found or password incorrect.
-   * @param username {string} The username to check.
-   * @param passwordHash {string} The pre-hashed password to check.
-   * @throws {Error} If user not found or password incorrect.
-   */
-  export function getUser(username: string, passwordHash: string): User {
-    // Get all users from local storage
-    const allUsers = getAllUsers();
-    const user = allUsers.find(
-      (u) => u.username === username && u.passwordHash === passwordHash,
-    );
-    if (!user) throw new Error("User not found or incorrect password");
-
-    // Return user without password hash
-    return { ...user, passwordHash: "" };
-  }
-
-  /**
-   * @desc Checks if a given username exists in local storage (among all users).
-   * @return {boolean} True if user exists, false otherwise.
-   * @param username {string} The username to check.
-   */
-  export function hasUser(username: string): boolean {
-    const allUsers = getAllUsers();
-    return allUsers.some((u) => u.username === username);
-  }
-
-  /**
-   * @desc Add a new user to local storage.
-   * @param user {User} The user object to add (passwordHash must be pre-hashed
-   * using passwordHash function with bcrypt).
-   * @throws {Error} If username already exists.
-   */
-  export function addUser(user: User): void {
-    if (hasUser(user.username)) {
-      throw new Error(`Username ${user.username} already exists`);
+  export function getUser(): User {
+    const userJson = localStorage.getItem(Key.USER);
+    if (!userJson) {
+      throw new Error("No user is currently logged in");
     }
-    const allUsers = getAllUsers();
-    allUsers.push(user);
-    localStorage.setItem(Key.USERS, JSON.stringify(allUsers));
+    return JSON.parse(userJson) as User;
+  }
+
+  /**
+   * @desc Set the currently logged-in user in local storage.
+   * @param firstName {string} The user's first name.
+   * @param lastName {string} The user's last name.
+   * @param phoneNumber {string} The user's phone number.
+   * @param role {UserRole} The user's role.
+   * @throws {Error} If any parameter is invalid.
+   */
+  export function setUser({
+    firstName,
+    lastName,
+    phoneNumber,
+    role,
+  }: User): void {
+    // Validate parameters
+    if (!firstName || !lastName || !phoneNumber || !role)
+      throw new Error("Invalid parameters to set user");
+    if (!UserRoles.includes(role))
+      throw new Error(
+        `Invalid user role: ${role}, must be one of ${UserRoles}`,
+      );
+
+    // Create user object
+    const user: User = { firstName, lastName, phoneNumber, role };
+
+    // Store user object as JSON string in local storage
+    localStorage.setItem(Key.USER, JSON.stringify(user));
+  }
+
+  /**
+   * @desc Clear the currently logged-in user from local storage (log out).
+   */
+  export function clearUser(): void {
+    if (localStorage.getItem(Key.USER)) {
+      localStorage.removeItem(Key.USER);
+    }
   }
 }
 
@@ -120,7 +101,12 @@ export namespace StrUtil {
    * @return {string} The capitalized string.
    */
   export function capitalizeFirstLetter(str: string): string {
+    // Validate parameter
+    if (typeof str !== "string")
+      throw new Error(`Invalid parameter to capitalizeFirstLetter: ${str}`);
     if (str.length === 0) return str;
+
+    // Capitalize first letter and return
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 }

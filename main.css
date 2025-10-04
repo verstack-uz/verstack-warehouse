@@ -1,9 +1,16 @@
 @import "tailwindcss";
+@import "tailwindcss-intersect";
 @import "./node_modules/flyonui/variants.css";
+@import "@fontsource-variable/inter/index.css";
 
 @plugin "flyonui" {
   themes: all;
 }
 @plugin "@iconify/tailwind4";
+@plugin "tailwindcss-motion";
 
 @source "./node_modules/flyonui/dist/index.js";
+
+body {
+  font-family: "Inter Variable", sans-serif;
+}

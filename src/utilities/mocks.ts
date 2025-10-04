@@ -50,7 +50,7 @@ class LocalStorageMock {
    * @return {void}
    */
   removeItem(key: string) {
-    delete this.data[key];
+    this.data.delete(key);
   }
 }
 
