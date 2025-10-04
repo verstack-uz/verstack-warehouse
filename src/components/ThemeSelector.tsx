@@ -20,10 +20,7 @@ interface ThemeSelectorProps {
 const ThemeSelector: React.FC<ThemeSelectorProps> = ({ theme, setTheme }) => {
   return (
     <div className={"flex flex-col space-y-4"}>
-      <div className={"flex flex-row space-x-1 text-2xl"}>
-        <p className={""}>Selected theme:</p>
-        <p className={"text-primary"}>{theme}</p>
-      </div>
+      <p className={"text-2xl"}>Theme</p>
       <div className={"flex flex-row flex-wrap space-x-2 space-y-2"}>
         {AppThemes.map((_theme: AppTheme, idx: number) => (
           <input

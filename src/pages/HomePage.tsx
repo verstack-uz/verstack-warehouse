@@ -23,7 +23,7 @@ const HomePage: React.FC = () => {
   try {
     user = LSUtil.getUser();
     React.useEffect(() => {
-      document.title = "Warehouse by Verstack";
+      document.title = "Home";
     });
   } catch {
     React.useEffect(() => {
@@ -35,7 +35,7 @@ const HomePage: React.FC = () => {
   return (
     <div
       data-theme={LSUtil.getTheme()}
-      className={"w-screen h-screen motion-preset-fade"}
+      className={"w-screen min-h-screen pb-64 motion-preset-fade"}
     >
       <Header title={"Home"} />
       <div className={"bg-base-100 h-full px-4 pt-4 flex flex-col space-y-4"}>

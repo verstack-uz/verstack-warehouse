@@ -15,7 +15,7 @@ import { User, UserRole, UserRoles } from "@/utilities/types";
 const RegisterPage: React.FC = () => {
   /// Set page title & navigate hook
   React.useEffect(() => {
-    document.title = "User Login";
+    document.title = "Registration";
   });
   let navigate = useNavigate();
 
@@ -24,6 +24,7 @@ const RegisterPage: React.FC = () => {
   const [invalidPhoneNumber, setInvalidPhoneNumber] = React.useState(false);
   const [password, setPassword] = React.useState<string>("");
   const [showPassword, setShowPassword] = React.useState(false);
+  const [rePassword, setRePassword] = React.useState<string>("");
   const [invalidPassword, setInvalidPassword] = React.useState(false);
   const [firstName, setFirstName] = React.useState<string>("");
   const [invalidFirstName, setInvalidFirstName] = React.useState(false);
@@ -47,6 +48,11 @@ const RegisterPage: React.FC = () => {
       return;
     } else {
       setInvalidPassword(false);
+    }
+
+    // Validate re-entered password
+    if (password !== rePassword) {
+      return;
     }
 
     // Validate first name
@@ -81,130 +87,165 @@ const RegisterPage: React.FC = () => {
   return (
     <div
       data-theme={LSUtil.getTheme()}
-      className={"w-screen h-screen bg-base-200 motion-preset-fade"}
+      className={"w-screen min-h-screen pb-64 motion-preset-fade"}
     >
-      <Header title={"Login"} />
+      <Header title={"Registration"} />
 
-      <div className={"max-w-128 mx-auto mt-16 md:mt-24 p-8 flex flex-col space-y-4"}>
-        <div>
-          <label className={"label-text"} htmlFor={"phoneNumberInput"}>
-            Phone number
-          </label>
-          <input
-            id="phoneNumberInput"
-            type="text"
-            placeholder="+998012345678"
-            className={`input ${invalidPhoneNumber ? "is-invalid" : ""}`}
-            value={phoneNumber}
-            onChange={(event) => {
-              setPhoneNumber(event.target.value);
-              setInvalidPhoneNumber(false);
-            }}
-          />
-          {invalidPhoneNumber && (
-            <span className="helper-text">Expected format: +998012345678</span>
-          )}
-        </div>
+      <div className={"max-w-128 mx-auto px-4 py-2 flex flex-col space-y-8"}>
+        <div className={"card p-4 flex flex-col space-y-4"}>
+          <p className={"text-2xl"}>Registration form</p>
 
-        <div>
-          <label className={"label-text"} htmlFor="passwordInput">
-            Password
-          </label>
-          <div className={`input ${invalidPassword ? "is-invalid" : ""}`}>
+          <div>
+            <label className={"label-text"} htmlFor={"phoneNumberInput"}>
+              Phone number
+            </label>
             <input
-              id="passwordInput"
-              type={showPassword ? "text" : "password"}
-              placeholder="Enter password"
-              value={password}
+              id="phoneNumberInput"
+              type="text"
+              placeholder="+998012345678"
+              className={`input ${invalidPhoneNumber ? "is-invalid" : ""}`}
+              value={phoneNumber}
               onChange={(event) => {
-                setPassword(event.target.value);
-                setInvalidPassword(false);
+                setPhoneNumber(event.target.value);
+                setInvalidPhoneNumber(false);
               }}
             />
-            <button
-              type="button"
-              className="block cursor-pointer"
-              aria-label="password toggle"
-              onClick={() => setShowPassword((prev) => !prev)}
-            >
-              {showPassword ? (
-                <span className="icon-[tabler--eye] text-base-content/80 block size-5 shrink-0"></span>
-              ) : (
-                <span className="icon-[tabler--eye-off] text-base-content/80 block size-5 shrink-0"></span>
-              )}
-            </button>
+            {invalidPhoneNumber && (
+              <span className="helper-text">
+                Expected format: +998012345678
+              </span>
+            )}
           </div>
-          {invalidPassword && (
-            <span className="helper-text">
-              Password must be at least 6 characters long
-            </span>
-          )}
-        </div>
 
-        <div>
-          <label className={"label-text"} htmlFor={"firstNameInput"}>
-            First Name
-          </label>
-          <input
-            id="firstNameInput"
-            type="text"
-            placeholder="John"
-            className={`input ${invalidFirstName ? "is-invalid" : ""}`}
-            value={firstName}
-            onChange={(event) => {
-              setFirstName(event.target.value);
-              setInvalidFirstName(false);
-            }}
+          <div>
+            <label className={"label-text"} htmlFor="passwordInput">
+              Password
+            </label>
+            <div className={`input ${invalidPassword ? "is-invalid" : ""}`}>
+              <input
+                id="passwordInput"
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter password"
+                value={password}
+                onChange={(event) => {
+                  setPassword(event.target.value);
+                  setInvalidPassword(false);
+                }}
+              />
+              <button
+                type="button"
+                className="block cursor-pointer"
+                aria-label="password toggle"
+                onClick={() => setShowPassword((prev) => !prev)}
+              >
+                {showPassword ? (
+                  <span className="icon-[tabler--eye] text-base-content/80 block size-5 shrink-0"></span>
+                ) : (
+                  <span className="icon-[tabler--eye-off] text-base-content/80 block size-5 shrink-0"></span>
+                )}
+              </button>
+            </div>
+            {invalidPassword && (
+              <span className="helper-text">
+                Password must be at least 6 characters long
+              </span>
+            )}
+            <div
+              data-strong-password='{"target": "#passwordInput", "stripClasses": "strong-password:bg-primary strong-password-accepted:bg-teal-500 h-1.5 flex-auto bg-neutral/20"}'
+              className={"rounded-full overflow-hidden mt-2 flex gap-0.5"}
+            ></div>
+          </div>
+
+          <div>
+            <label className={"label-text"} htmlFor="rePasswordInput">
+              Re-enter Password
+            </label>
+            <div
+              className={`input ${password !== rePassword ? "is-invalid" : ""}`}
+            >
+              <input
+                id="rePasswordInput"
+                type={showPassword ? "text" : "password"}
+                placeholder="Re-enter password"
+                value={rePassword}
+                onChange={(event) => {
+                  setRePassword(event.target.value);
+                }}
+              />
+            </div>
+            {password !== rePassword && (
+              <span className="helper-text">Passwords do not match</span>
+            )}
+          </div>
+
+          <div>
+            <label className={"label-text"} htmlFor={"firstNameInput"}>
+              First Name
+            </label>
+            <input
+              id="firstNameInput"
+              type="text"
+              placeholder="John"
+              className={`input ${invalidFirstName ? "is-invalid" : ""}`}
+              value={firstName}
+              onChange={(event) => {
+                setFirstName(event.target.value);
+                setInvalidFirstName(false);
+              }}
+            />
+            {invalidFirstName && (
+              <span className="helper-text">First name cannot be empty</span>
+            )}
+          </div>
+
+          <div>
+            <label className={"label-text"} htmlFor={"lastNameInput"}>
+              Last Name
+            </label>
+            <input
+              id="lastNameInput"
+              type="text"
+              placeholder="Doe"
+              className={`input ${invalidLastName ? "is-invalid" : ""}`}
+              value={lastName}
+              onChange={(event) => {
+                setLastName(event.target.value);
+                setInvalidLastName(false);
+              }}
+            />
+            {invalidLastName && (
+              <span className="helper-text">Last name cannot be empty</span>
+            )}
+          </div>
+
+          <div>
+            <label className={"label-text"} htmlFor={"roleSelect"}>
+              Role
+            </label>
+            <select
+              id="roleSelect"
+              className="select w-full"
+              value={role}
+              onChange={(event) => setRole(event.target.value as UserRole)}
+            >
+              {UserRoles.map((role) => (
+                <option key={role} value={role}>
+                  {StrUtil.capitalizeFirstLetter(role)}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <Button
+            text={"Register"}
+            className={"btn btn-primary mt-8"}
+            onClick={registerButtonClick}
           />
-          {invalidFirstName && (
-            <span className="helper-text">First name cannot be empty</span>
-          )}
-        </div>
 
-        <div>
-          <label className={"label-text"} htmlFor={"lastNameInput"}>
-            Last Name
-          </label>
-          <input
-            id="lastNameInput"
-            type="text"
-            placeholder="Doe"
-            className={`input ${invalidLastName ? "is-invalid" : ""}`}
-            value={lastName}
-            onChange={(event) => {
-              setLastName(event.target.value);
-              setInvalidLastName(false);
-            }}
-          />
-          {invalidLastName && (
-            <span className="helper-text">Last name cannot be empty</span>
-          )}
-        </div>
+          <p className={"text-center"}>Already have an account?</p>
 
-        {/* user role select from UserRoles */}
-        <div>
-          <label className={"label-text"} htmlFor={"roleSelect"}>
-            Role
-          </label>
-          <select
-            id="roleSelect"
-            className="select w-full"
-            value={role}
-            onChange={(event) => setRole(event.target.value as UserRole)}
-          >
-            {UserRoles.map((role) => (
-              <option key={role} value={role}>
-                {StrUtil.capitalizeFirstLetter(role)}
-              </option>
-            ))}
-          </select>
+          <Button text={"Login"} href={AppRoute.LOGIN} />
         </div>
-
-        <Button
-          text={"Register"}
-          className={"btn btn-primary mt-8"}
-          onClick={registerButtonClick}
-        />
       </div>
     </div>
   );

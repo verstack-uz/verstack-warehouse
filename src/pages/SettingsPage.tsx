@@ -21,7 +21,7 @@ const SettingsPage = () => {
     // Not logged in, so logout button must be hidden
   }
   React.useEffect(() => {
-    document.title = "App Settings";
+    document.title = "Settings";
   });
 
   // Theme state
@@ -30,11 +30,15 @@ const SettingsPage = () => {
   return (
     <div
       data-theme={LSUtil.getTheme()}
-      className={"w-screen h-screen motion-preset-fade"}
+      className={"w-screen min-h-screen pb-64 motion-preset-fade"}
     >
-      <Header title={"App Settings"} hideSettingsButton={true} />
-      <div className={"bg-base-100 h-full px-4 pt-4 flex flex-col space-y-4"}>
-        <ThemeSelector theme={theme} setTheme={setTheme} />
+      <Header title={"Settings"} hideSettingsButton={true} />
+
+      <div className={"max-w-128 mx-auto px-4 py-2 flex flex-col space-y-8"}>
+        <div className={"card p-4"}>
+          <ThemeSelector theme={theme} setTheme={setTheme} />
+        </div>
+
         {user && (
           <Button
             text={"Logout"}
@@ -44,6 +48,7 @@ const SettingsPage = () => {
             }}
           />
         )}
+
         <Button text={"Back to Home"} href={AppRoute.HOME} />
       </div>
     </div>
