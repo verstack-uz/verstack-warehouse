@@ -1,3 +1,9 @@
+/**
+ * Header Component
+ * Displays page title in a styled header format.
+ */
+
+// third-party libraries
 import React from "react";
 
 interface HeaderProps {
@@ -5,7 +11,10 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ title }) => {
-  return <h1 className="text-3xl pb-4">{title}</h1>;
+  return (
+    <div className={"pb-4"}>
+      <h1 className="text-3xl">{title}</h1>
+    </div>
+  );
 };
-
 export default Header;

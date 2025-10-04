@@ -1,7 +1,15 @@
+/**
+ * Main entry point for the React application.
+ * Sets up routing and renders the app as a single-page application (SPA).
+ */
+
+// third party libraries
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
+
+// local / internal stuff
 import "../index.css";
 import HomePage from "@/pages/HomePage";
 import LoginPage from "@/pages/LoginPage";

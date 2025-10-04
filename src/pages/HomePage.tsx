@@ -1,22 +1,22 @@
+/**
+ * Home Page Component
+ * This component serves as the landing page for the Warehouse application.
+ * It shows different UI for different user types (складчик, прораб, закупщик,
+ * инженер ПТО, бухгалтер, администратор).
+ */
+
 import React from "react";
 import Header from "@/components/Header";
-import { AppTheme, AppThemes } from "@/types";
+import { getStoredTheme } from "@/utilities/utilities";
 
 const HomePage: React.FC = () => {
   document.title = "Warehouse (by Verstack)";
 
-  let storedTheme = localStorage.getItem("theme") as AppTheme;
-  if (!storedTheme || !AppThemes.includes(storedTheme)) {
-    storedTheme = "light";
-    localStorage.setItem("theme", storedTheme);
-  }
-  let [theme, setTheme] = React.useState<AppTheme>(storedTheme);
-  React.useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-  });
-
   return (
-    <div className={"w-screen h-screen flex flex-col p-4 space-y-4"}>
+    <div
+      data-theme={getStoredTheme()}
+      className={"w-screen h-screen flex flex-col p-4 space-y-4"}
+    >
       <Header title={"Home"} />
 
       <a href="/login" className={"btn"}>
@@ -29,5 +29,4 @@ const HomePage: React.FC = () => {
     </div>
   );
 };
-
 export default HomePage;

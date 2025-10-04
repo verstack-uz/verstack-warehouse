@@ -1,22 +1,21 @@
+/**
+ * Login Page Component
+ * This component serves as the login page for the Warehouse application.
+ * It provides a link to navigate back to the home page.
+ */
+
 import React from "react";
 import Header from "@/components/Header";
-import { AppTheme, AppThemes } from "@/types";
+import { getStoredTheme } from "@/utilities/utilities";
 
 const LoginPage: React.FC = () => {
   document.title = "Login";
 
-  let storedTheme = localStorage.getItem("theme") as AppTheme;
-  if (!storedTheme || !AppThemes.includes(storedTheme)) {
-    storedTheme = "light";
-    localStorage.setItem("theme", storedTheme);
-  }
-  let [theme, setTheme] = React.useState<AppTheme>(storedTheme);
-  React.useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-  });
-
   return (
-    <div className={"w-screen h-screen flex flex-col p-4 space-y-4"}>
+    <div
+      data-theme={getStoredTheme()}
+      className={"w-screen h-screen flex flex-col p-4 space-y-4"}
+    >
       <Header title={"Login"} />
       <a href="/" className={"btn"}>
         Back home
@@ -24,5 +23,4 @@ const LoginPage: React.FC = () => {
     </div>
   );
 };
-
 export default LoginPage;
