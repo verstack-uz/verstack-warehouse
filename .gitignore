@@ -186,6 +186,8 @@ logs
 
 node_modules
 bower_components
+coverage
+dist
 
 *.sublime*
 
@@ -226,6 +228,7 @@ sketch
 # When using Gradle or Maven with auto-import, you should exclude module files,
 # since they will be recreated, and may cause churn.  Uncomment if using
 # auto-import.
+.idea
 # .idea/artifacts
 # .idea/compiler.xml
 # .idea/jarRepositories.xml
