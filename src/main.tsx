@@ -7,10 +7,14 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { RouterProvider } from "react-router/dom";
+import { Observer } from "tailwindcss-intersect";
 
 // local / internal stuff
-import "../index.css";
+import "../main.css";
 import getRoutes from "@/routes";
+
+// initialize intersection observer for tailwindcss-intersect
+Observer.start();
 
 // routes
 const router = getRoutes();

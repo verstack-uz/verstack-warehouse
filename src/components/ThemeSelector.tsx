@@ -19,18 +19,15 @@ interface ThemeSelectorProps {
 
 const ThemeSelector: React.FC<ThemeSelectorProps> = ({ theme, setTheme }) => {
   return (
-    <div className={"w-full"}>
-      <h1 className={"text-2xl"}>
-        Selected theme:
-        <span className={"text-primary ml-2"}>
-          {StrUtil.capitalizeFirstLetter(theme)}
-        </span>
-      </h1>
-
-      <div className="mt-4 flex flex-row flex-wrap space-x-2 space-y-2">
+    <div className={"flex flex-col space-y-4"}>
+      <div className={"flex flex-row space-x-1 text-2xl"}>
+        <p className={""}>Selected theme:</p>
+        <p className={"text-primary"}>{theme}</p>
+      </div>
+      <div className={"flex flex-row flex-wrap space-x-2 space-y-2"}>
         {AppThemes.map((_theme: AppTheme, idx: number) => (
           <input
-            className="btn btn-soft flex-1 min-w-20"
+            className="btn btn-soft flex-1 min-w-24"
             type="radio"
             key={`theme-selector-${idx}`}
             name="theme-selector-group"
