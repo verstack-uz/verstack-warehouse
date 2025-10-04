@@ -70,7 +70,7 @@ const LoginPage: React.FC = () => {
     >
       <Header title={"Login"} />
 
-      <div className={"w-128 mx-auto mt-24 p-8 flex flex-col space-y-4"}>
+      <div className={"max-w-128 mx-auto mt-16 md:mt-24 p-8 flex flex-col space-y-4"}>
         <div>
           <label className={"label-text"} htmlFor={"phoneNumberInput"}>
             Phone number
